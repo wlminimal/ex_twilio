@@ -51,6 +51,10 @@ defmodule ExTwilio.UrlGenerator do
           url = add_segments(Config.programmable_chat_url(), module, id, options)
           {url, options}
 
+        ["ExTwilio", "Services" | _] ->
+          url = add_segments(Config.messaging_service_url(), module, id, options)
+          {url, options}
+
         _ ->
           # Add Account SID segment if not already present
           options = add_account_to_options(module, options)
@@ -64,6 +68,24 @@ defmodule ExTwilio.UrlGenerator do
     else
       url <> build_query(module, options)
     end
+  end
+
+  @doc """
+  Custom URL for Phone number in Messaging Service
+  """
+
+  def build_phone_number_url(module, messaging_service_sid, options) do
+    base_url = Config.messaging_service_url()
+    url = "#{base_url}/Services/#{messaging_service_sid}/PhoneNumbers"
+    IO.puts ">> Built url: #{url}"
+    {url, options}
+
+    if Keyword.has_key?(options, :query) do
+      url <> options[:query]
+    else
+      url <> build_query(module, options)
+    end
+
   end
 
   defp add_segments(url, module, id, options) do

@@ -74,6 +74,19 @@ defmodule ExTwilio.Api do
   end
 
   @doc """
+  Add existing phone number to Messaging Service
+  """
+  @spec add(atom, String.t, data, list) :: Parser.success | Parser.error
+  def add(module, messaging_service_sid, data, options \\ []) do
+    data = format_data(data)
+
+    module
+    |> Url.build_phone_number_url(messaging_service_sid, options)
+    |> Api.post!(data, auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  @doc """
   Update an existing resource in the Twilio Api.
 
   ## Examples

@@ -49,6 +49,8 @@ defmodule ExTwilio.Config do
 
   def programmable_chat_url, do: "https://chat.twilio.com/v2"
 
+  def messaging_service_url(), do: "https://messaging.twilio.com/v1"
+
   @doc """
   A light wrapper around `Application.get_env/2`, providing automatic support for
   `{:system, "VAR"}` tuples.
