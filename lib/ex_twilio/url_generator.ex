@@ -88,6 +88,36 @@ defmodule ExTwilio.UrlGenerator do
 
   end
 
+  @doc """
+  Build URL for Verify API
+  """
+  def build_verify_url(module, start_or_check, api_key, options) do
+    base_url = Config.authy_api_url()
+    url = "#{base_url}/#{start_or_check}?api_key=#{api_key}&"
+    IO.puts ">> Built url #{url}"
+
+    {url, options}
+
+    if Keyword.has_key?(options, :query) do
+      url <> options[:query]
+    else
+      url <> build_query(module, options)
+    end
+  end
+
+  def build_verify_check_url(module, api_key, data, options) do
+    base_url = Config.authy_api_url()
+    url = "#{base_url}/check?api_key=#{api_key}&#{data}"
+    IO.puts ">> Built url #{url}"
+    {url, options}
+
+    if Keyword.has_key?(options, :query) do
+      url <> options[:query]
+    else
+      url <> build_query(module, options)
+    end
+  end
+
   defp add_segments(url, module, id, options) do
     # Append parents
     url = url <> build_segments(:parent, normalize_parents(module.parents), options)
@@ -113,6 +143,16 @@ defmodule ExTwilio.UrlGenerator do
     |> Enum.flat_map(fn
       {key, value} when is_list(value) -> Enum.map(value, &{camelize(key), &1})
       {key, value} -> [{camelize(key), value}]
+    end)
+    |> URI.encode_query()
+  end
+
+  @spec to_query_string_no_camelize(list) :: String.t
+  def to_query_string_no_camelize(list) do
+    list
+    |> Enum.flat_map(fn
+      {key, value} when is_list(value) -> Enum.map(value, &({key, &1}))
+      {key, value} -> [{key, value}]
     end)
     |> URI.encode_query()
   end

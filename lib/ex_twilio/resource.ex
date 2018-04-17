@@ -80,6 +80,18 @@ defmodule ExTwilio.Resource do
         def destroy(sid, options \\ []), do: Api.destroy(__MODULE__, sid, options)
       end
 
+      if :start in import_functions do
+        @spec start(String.t, Api.data, list) :: Parser.parsed_response
+        def start(api_key, data, options \\ []), do: Api.start(__MODULE__, api_key, data, options)
+      end
+
+      if :check in import_functions do
+        @spec check(String.t, Api.data, list) :: Parser.parsed_response
+        def check(api_key, data, options \\ []), do: Api.check(__MODULE__, api_key, data, options)
+      end
+
+
+
       @doc """
       Underscored and lowercased collection name for a given resource.
       Delegates the real work to `ExTwilio.Api.resource_collection_name/1` by

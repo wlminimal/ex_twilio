@@ -87,6 +87,29 @@ defmodule ExTwilio.Api do
   end
 
   @doc """
+  Phone Verify API Start
+  """
+  @spec start(atom, String.t, data, list) :: Parser.success | Parser.error
+  def start(module, api_key, data, options) do
+    data = format_data_no_camelcase(data)
+
+    module
+    |> Url.build_verify_url("start", api_key, options)
+    |> Api.post!(data, auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  @spec check(atom, String.t, data, list) :: Parser.success | Parser.error
+  def check(module, api_key, data, options) do
+    data = format_data_no_camelcase(data)
+
+    module
+    |> Url.build_verify_check_url(api_key, data, options)
+    |> Api.get!(auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  @doc """
   Update an existing resource in the Twilio Api.
 
   ## Examples
@@ -209,4 +232,9 @@ defmodule ExTwilio.Api do
   end
 
   def format_data(data), do: data
+
+  def format_data_no_camelcase(data) do
+    data
+    |> Url.to_query_string_no_camelize()
+  end
 end

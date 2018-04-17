@@ -51,6 +51,8 @@ defmodule ExTwilio.Config do
 
   def messaging_service_url(), do: "https://messaging.twilio.com/v1"
 
+  def authy_api_url(), do: "https://api.authy.com/protected/json/phones/verification"
+
   @doc """
   A light wrapper around `Application.get_env/2`, providing automatic support for
   `{:system, "VAR"}` tuples.
