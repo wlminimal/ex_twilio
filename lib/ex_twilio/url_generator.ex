@@ -59,6 +59,7 @@ defmodule ExTwilio.UrlGenerator do
           # Add Account SID segment if not already present
           options = add_account_to_options(module, options)
           url = add_segments(Config.base_url(), module, id, options) <> ".json"
+          IO.puts ">> Built url: #{url}"
           {url, options}
       end
 
@@ -85,7 +86,39 @@ defmodule ExTwilio.UrlGenerator do
     else
       url <> build_query(module, options)
     end
+  end
 
+  @doc """
+  Custom URL for Phone number in Messaging Service
+  for get a phone number in messaging service
+  """
+  def build_phone_number_url(module, messaging_service_sid, phone_sid, options) do
+    base_url = Config.messaging_service_url()
+    url = "#{base_url}/Services/#{messaging_service_sid}/PhoneNumbers/#{phone_sid}"
+    IO.puts ">> Built url: #{url}"
+    {url, options}
+
+    if Keyword.has_key?(options, :query) do
+      url <> options[:query]
+    else
+      url <> build_query(module, options)
+    end
+  end
+
+  @doc """
+  Custom URL for AlphaSenderID in Messaging Service
+  """
+  def build_alpha_sender_url(module, messaging_service_sid, options) do
+    base_url = Config.messaging_service_url()
+    url = "#{base_url}/Services/#{messaging_service_sid}/AlphaSenders"
+    IO.puts ">> Built url: #{url}"
+    {url, options}
+
+    if Keyword.has_key?(options, :query) do
+      url <> options[:query]
+    else
+      url <> build_query(module, options)
+    end
   end
 
   @doc """

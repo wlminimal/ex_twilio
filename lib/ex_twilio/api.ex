@@ -87,6 +87,46 @@ defmodule ExTwilio.Api do
   end
 
   @doc """
+  List phone number in messaging service
+  """
+  def list_phone_number_in_messaging_service(module, messaging_serivce_sid, options \\ []) do
+
+    module
+    |> Url.build_phone_number_url(messaging_serivce_sid, options)
+    |> Api.get!(auth_header(options))
+    |> Parser.parse_list(module, "phone_numbers")
+  end
+
+  @doc """
+  get phone number in messaging service
+  """
+  def get_phone_number_in_messaging_service(module, messaging_service_sid, phone_sid, options \\[]) do
+    module
+    |> Url.build_phone_number_url(messaging_service_sid, phone_sid, options)
+    |> Api.get!(auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  @doc """
+  Add Alpha Sender Id to Messaging Service
+  """
+  def add_alpha_sender_id(module, messaging_service_sid, data, options \\ []) do
+    data = format_data(data)
+
+    module
+    |> Url.build_alpha_sender_url(messaging_service_sid, options)
+    |> Api.post!(data, auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  def get_alpha_sender_id(module, messaging_service_sid, options \\[]) do
+    module
+    |> Url.build_alpha_sender_url(messaging_service_sid, options)
+    |> Api.get!(auth_header(options))
+    |> Parser.parse(module)
+  end
+
+  @doc """
   Phone Verify API Start
   """
   @spec start(atom, String.t, data, list) :: Parser.success | Parser.error

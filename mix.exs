@@ -22,6 +22,7 @@ defmodule ExTwilio.Mixfile do
   defp deps do
     [
       {:httpoison, ">= 0.9.0"},
+     # {:httpoison, "~> 0.9.0"},
       {:poison, "~> 3.0"},
       {:inflex, "~> 1.0"},
       {:joken, "~> 1.5"},

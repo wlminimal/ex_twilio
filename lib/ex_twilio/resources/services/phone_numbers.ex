@@ -15,7 +15,9 @@ defmodule ExTwilio.Services.PhoneNumbers do
   					url: nil
 
   use ExTwilio.Resource, import: [
-  	:add,
+		:add,
+		:list_phone_number_in_messaging_service,
+		:get_phone_number_in_messaging_service,
   ]
 
   def parents, do: [:services]
